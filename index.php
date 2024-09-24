@@ -62,28 +62,20 @@
                 case 'deposit':
                     amount = prompt("How much do you want to deposit?");
                     if (amount) {
-                        fetch(`index.php?action=deposit&amount=${amount}`)
-                            .then(response => response.text())
-                            .then(data => document.getElementById('result').innerText = data);
+                        document.getElementById('result').innerText = `You have deposited Rs${amount}`;
                     }
                     break;
                 case 'withdraw':
                     amount = prompt("How much do you want to withdraw?");
                     if (amount) {
-                        fetch(`index.php?action=withdraw&amount=${amount}`)
-                            .then(response => response.text())
-                            .then(data => document.getElementById('result').innerText = data);
+                        document.getElementById('result').innerText = `You have withdrawn Rs${amount}`;
                     }
                     break;
                 case 'balance':
-                    fetch('index.php?action=balance')
-                        .then(response => response.text())
-                        .then(data => document.getElementById('result').innerText = data);
+                    document.getElementById('result').innerText = "Your current balance is RsXXXX";
                     break;
                 case 'statement':
-                    fetch('index.php?action=statement')
-                        .then(response => response.text())
-                        .then(data => document.getElementById('result').innerText = data);
+                    document.getElementById('result').innerText = "Mini Statement:\n1. +Rs1000\n2. -Rs500\n3. +Rs200";
                     break;
                 default:
                     document.getElementById('result').innerText = "Invalid action";
@@ -92,43 +84,3 @@
     </script>
 </body>
 </html>
-
-<?php
-session_start();
-
-if (!isset($_SESSION['balance'])) {
-    $_SESSION['balance'] = 5000; // Example initial balance
-}
-
-if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['action'])) {
-    $action = $_GET['action'];
-    switch ($action) {
-        case 'deposit':
-            if (isset($_GET['amount'])) {
-                $amount = floatval($_GET['amount']);
-                $_SESSION['balance'] += $amount;
-                echo "You have deposited Rs{$amount}. New balance is Rs{$_SESSION['balance']}";
-            }
-            break;
-        case 'withdraw':
-            if (isset($_GET['amount'])) {
-                $amount = floatval($_GET['amount']);
-                if ($amount <= $_SESSION['balance']) {
-                    $_SESSION['balance'] -= $amount;
-                    echo "You have withdrawn Rs{$amount}. New balance is Rs{$_SESSION['balance']}";
-                } else {
-                    echo "Insufficient balance";
-                }
-            }
-            break;
-        case 'balance':
-            echo "Your current balance is Rs{$_SESSION['balance']}";
-            break;
-        case 'statement':
-            echo "Mini Statement:\n1. +Rs1000\n2. -Rs500\n3. +Rs200";
-            break;
-        default:
-            echo "Invalid action";
-    }
-}
-?>
