@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Machine</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to ID Bank</h1>
+        <button onclick="performAction('deposit')">Deposit</button>
+        <button onclick="performAction('withdraw')">Withdraw</button>
+        <button onclick="performAction('balance')">Balance Check</button>
+        <button onclick="performAction('statement')">Mini Statement</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        function performAction(action) {
+            let amount = 0;
+            if (action === 'deposit' || action === 'withdraw') {
+                amount = prompt(`How much do you want to ${action}?`);
+                if (!amount) return;
+            }
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "atm_backend.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    document.getElementById('result').innerText = xhr.responseText;
+                }
+            };
+            xhr.send(`action=${action}&amount=${amount}`);
+        }
+    </script>
+</body>
+</html>
+ 
