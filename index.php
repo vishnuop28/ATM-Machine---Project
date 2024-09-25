@@ -47,7 +47,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to Fed Bank</h1>
+        <h1>Welcome to ID Bank</h1>
         <button onclick="performAction('deposit')">Deposit</button>
         <button onclick="performAction('withdraw')">Withdraw</button>
         <button onclick="performAction('balance')">Balance Check</button>
