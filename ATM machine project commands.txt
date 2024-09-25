@@ -1,0 +1,6 @@
+Step 1 : Install docker : apt-get install docker.io -y
+Clone git from repo : git clone https://github.com/vishnuop28/ATM-Machine---Project.git 	
+Get inside the folder : cd ATM-Machine---Project
+Build a docker image from dockerfile : docker build -t myimage .
+Run the container : docker run -d -p 80:80 --name mycontainer myimage
+Search <public ip of instance> in the browser to get the webpage.
