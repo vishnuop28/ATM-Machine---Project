@@ -47,7 +47,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to ID Bank</h1>
+        <h1>Welcome to Fed Bank</h1>
         <button onclick="performAction('deposit')">Deposit</button>
         <button onclick="performAction('withdraw')">Withdraw</button>
         <button onclick="performAction('balance')">Balance Check</button>
@@ -56,26 +56,43 @@
     </div>
 
     <script>
+        let balance = 0;
+        let transactions = [];
+
         function performAction(action) {
             let amount;
             switch(action) {
                 case 'deposit':
                     amount = prompt("How much do you want to deposit?");
                     if (amount) {
-                        document.getElementById('result').innerText = `You have deposited Rs${amount}`;
+                        amount = parseInt(amount);
+                        balance += amount;
+                        transactions.push(amount);
+                        document.getElementById('result').innerText = `You have deposited Rs${amount}\nYour current balance is Rs${balance}`;
                     }
                     break;
                 case 'withdraw':
                     amount = prompt("How much do you want to withdraw?");
                     if (amount) {
-                        document.getElementById('result').innerText = `You have withdrawn Rs${amount}`;
+                        amount = parseInt(amount);
+                        if (amount <= balance) {
+                            balance -= amount;
+                            transactions.push(-amount);
+                            document.getElementById('result').innerText = `You have withdrawn Rs${amount}\nYour current balance is Rs${balance}`;
+                        } else {
+                            document.getElementById('result').innerText = "Insufficient Balance !!!";
+                        }
                     }
                     break;
                 case 'balance':
-                    document.getElementById('result').innerText = "Your current balance is RsXXXX";
+                    document.getElementById('result').innerText = `Your current balance is Rs${balance}`;
                     break;
                 case 'statement':
-                    document.getElementById('result').innerText = "Mini Statement:\n1. +Rs1000\n2. -Rs500\n3. +Rs200";
+                    let statement = "Mini Statement:\n";
+                    for (let i = 0; i < transactions.length; i++) {
+                        statement += `${i + 1}. ${transactions[i] > 0 ? '+' : ''}Rs${transactions[i]}\n`;
+                    }
+                    document.getElementById('result').innerText = statement;
                     break;
                 default:
                     document.getElementById('result').innerText = "Invalid action";
